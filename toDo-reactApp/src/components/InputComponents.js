@@ -15,7 +15,16 @@ function InputComponents(props) {
          <form onSubmit={ props.handleInputSubmit}>
             <div className="toDoInput">
                <div className="left">
-                  <input value={props.toDo} onChange={props.handleUserInput} type="text" placeholder=" Plan Something . . ." />
+                  <input value={props.toDo} required={true} minLength={3} onChange={props.handleUserInput} type="text" placeholder=" Plan Something . . ." />
+               </div>
+               <div className="right erase">
+                  <i onClick={props.resetInputField} className="fas fa-eraser" title="Clear"></i>
+               </div>
+              
+            </div>
+            <div className="toDoInput">
+               <div className="left">
+                  <input value={props.des} required={true} minLength={5} onChange={props.handleDescription} type="text" placeholder=" Description . . ." />
                </div>
                <div className="right erase">
                   <i onClick={props.resetInputField} className="fas fa-eraser" title="Clear"></i>

@@ -12,6 +12,8 @@ function DoneComponent(props) {
                    <div className="left"></div>
                    <div className="top">
                       <p className="textCross">{obj.text}</p>
+                      <p className="textCross">{obj.description}</p>
+
                    </div>
                    <div className="bottom">
                       <p>{obj.toDoTime}</p>
@@ -20,14 +22,16 @@ function DoneComponent(props) {
                       <i onClick={(e) => {
                          let isdelete = window.confirm("Deleting ToDo permanently !");
                          if (isdelete) {
-                            e.target.value = true;
+                           //  e.target.value = true;
+                            props.setToDos(props.toDos.filter((obj2) => {
+                                    if (obj2.id === obj.id) {
+                                      
+                                       props.DroppItem(obj2.id)
+                                    }
+                                    return obj
+                                 }));
                          }
-                         props.setToDos(props.toDos.filter((obj2) => {
-                            if (obj2.id === obj.id) {
-                               obj2.statusRemove = e.target.value;
-                            }
-                            return obj2;
-                         }));
+                      
                       }} value={obj.statusRemove} className="fas fa-trash-alt" title="Remove"></i>
                    </div>
                 </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import axios from "./axiosInstance"
+import axios from "./axiosInstance";
 import InputComponents from "./components/InputComponents";
 import DoneComponent from "./components/DoneComponent";
 import OngoingComponent from "./components/OngoingComponent";
@@ -8,18 +8,15 @@ import DroppedComponent from "./components/DroppedComponent";
 
 function App() {
   const [toDo, setToDo] = useState("");
-  const [toDos, setToDos] = useState('')
- 
+  const [des,setDes]=useState('')
+  const [toDos, setToDos] = useState('');
+  const [upTodo,setUpTodo] = useState('')
 
-  const index = toDos && toDos.findIndex((obj) => obj.statusRemove == true);
-  // console.log(index);
-  if (index > -1) toDos && toDos.splice(index, 1);
-
-  useEffect(async()=>{
-    const value = await axios.get('/');
-    console.log(value.data,"valuesssss");
-     setToDos(value.data)
-  },[])
+ useEffect(async () => {
+    const value = await axios.get("/");
+    
+    setToDos(value.data);
+  }, [upTodo]);
 
   const dayNames = [
     "Sunday",
@@ -60,61 +57,60 @@ function App() {
   const toDoTimeDateDay = toDoTime + " " + toDoDay + " " + toDoDate;
 
   const handleUserInput = (e) => {
-
     setToDo(e.target.value);
   };
+  const handleDescription=(e)=>{
+    setDes(e.target.value)
+  }
 
   const handleInputSubmit = async (e) => {
-   
     e.preventDefault();
-    
-    const data= await {
+console.log(des,"description");
+    const data = await {
       id: Date.now(),
       text: toDo,
       toDoTime: toDoTimeDateDay,
-    }
-   
-   let values= await axios.post("/todo",{data:data})
-    
-    if (toDo) {
+      description:des
+    };
+
+    let values = await axios.post("/todo", { data: data });
+
+    if (values) {
       setToDos([
         ...toDos,
         {
-          id:values.data.id ,
+          id: values.data.id,
           text: values.data.text,
           toDoTime: values.data.toDoTime,
-          statusErase: false,
-          statusDone: false,
-          statusDrop: false,
-          statusRetrieve: false,
-          statusRemove: false,
+          description:values.data.description
         },
       ]);
-      setToDo(" ");
+      setToDo("");
+      setDes('')
     }
   };
   const resetInputField = () => {
     setToDo("");
   };
-  const DroppItem=(id)=>{
-   axios.post("/delete",{id:id}).then((res)=>{
-    setToDos(toDos.filter((obj2) => {
-      if (obj2.id === res.data.id) {
-         obj2.statusRemove = true;
-         
-      }
-      return obj2;
-   }))
+  const DroppItem = (id) => {
+    axios.post("/delete", { id: id }).then((res) => {
+      setToDos(
+        toDos.filter((obj2) => {
+          if (obj2.id === res.data.id) {
+            obj2.statusRemove = true;
+          }
+          return obj2;
+        })
+      );
+    });
+  };
+  
+const UpdateItem=async(id,change)=>{
+ let valuess= await  axios.patch("/update",{id:id,change:change})
+ 
+ setUpTodo(valuess)
 
-   })
-
-  }
-
-  useEffect(() => {
-    // storing toDos data to localStorage of browser
-    // localStorage.setItem("Storage", JSON.stringify(toDos));
-  }, [toDos]);
-
+}
   return (
     <div className="app">
       <InputComponents
@@ -123,13 +119,19 @@ function App() {
         day={day}
         resetInputField={resetInputField}
         toDo={toDo}
+        des={des}
+        handleDescription={handleDescription}
       />
 
-      <DoneComponent toDos={toDos} setToDos={setToDos} />
+      <DoneComponent toDos={toDos} setToDos={setToDos} DroppItem={DroppItem}  />
 
-      <OngoingComponent setToDos={setToDos} toDos={toDos} />
+      <OngoingComponent setToDos={setToDos} toDos={toDos} UpdateItem={UpdateItem} />
 
-      <DroppedComponent toDos={toDos} setToDos={setToDos} DroppItem={DroppItem} />
+      <DroppedComponent
+        toDos={toDos}
+        setToDos={setToDos}
+        DroppItem={DroppItem}
+      />
     </div>
   );
 }

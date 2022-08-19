@@ -11,6 +11,10 @@ const ToDoDatas= new mongoose.Schema({
         type:String,
         require:true
     },
+    description:{
+        type:String,
+        require:true
+    },
     toDoTime:{
         type:String,
         require:true

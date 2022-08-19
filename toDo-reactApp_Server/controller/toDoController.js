@@ -2,11 +2,13 @@ const ToDoDatas = require("../model/ToDo");
 const mongoose = require("mongoose");
 
 const postText = async (req, res) => {
-  const { id, text, toDoTime } = req.body.data;
+  const { id, text, toDoTime,description } = req.body.data;
+  
   const ToDoData = await ToDoDatas.create({
     id: id,
     text: text,
     toDoTime: toDoTime,
+    description:description
   });
  res.status(201).json(ToDoData)
 };
@@ -22,5 +24,25 @@ const getList= async(req,res)=>{
     console.log(list,"cvbnm,");
     res.status(200).json(list)
 }
+const updateText = async(req,res)=>{
+  const {id,change}=req.body
+  console.log(id);
+  if(change=='Done'){
+    const updatedata= await ToDoDatas.findOneAndUpdate({id:id},{$set:{statusDone:true}});
+    console.log(updatedata,"fdatagggg");
+    res.status(204).json(updatedata)
+  }else if(change== 'Drop'){
+    const updatedata= await ToDoDatas.findOneAndUpdate({id:id},{$set:{statusDrop:true}});
+    console.log(updatedata,"fdatagggg");
+    res.status(204).json(updatedata)
+    
+  }
+  else if(change=='Drop&Retrive'){
+    const updatedata= await ToDoDatas.findOneAndUpdate({id:id},{$set:{statusDrop:true,statusRetrieve:false}});
+    console.log(updatedata,"fdatagggg");
+    res.status(204).json(updatedata)
 
-module.exports = {postText,deleteText,getList};
+  }
+}
+
+module.exports = {postText,deleteText,getList,updateText};

@@ -12,29 +12,35 @@ function OngoingComponent(props) {
                         <div key={obj.id} className="toDo">
                            <div className="left tick">
                               <i onClick={(e) => {
-                                 e.target.value = true;
+                                
                                  props.setToDos(props.toDos.filter((obj2) => {
                                     if (obj2.id === obj.id) {
-                                       obj2.statusDone = e.target.value;
+                                      
+                                       let data="Done"
+                                       props.UpdateItem(obj.id,data)
                                     }
-                                    return obj2;
+                                    return obj
                                  }));
                               }} value={obj.statusDone} className="fas fa-check" title="Done"></i>
                            </div>
                            <div className="top">
                               <p>{obj.text}</p>
+                              <p>{obj.description}</p>
+
                            </div>
                            <div className="bottom">
                               <p>{obj.toDoTime}</p>
                            </div>
                            <div className="right close">
                               <i onClick={(e) => {
-                                 e.target.value = true;
+                                
                                  props.setToDos(props.toDos.filter((obj2) => {
                                     if (obj2.id === obj.id) {
-                                       obj2.statusDrop = e.target.value;
+                                      
+                                       let data="Drop"
+                                       props.UpdateItem(obj.id,data)
                                     }
-                                    return obj2;
+                                    
                                  }));
                               }} value={obj.statusDrop} className="fas fa-times" title="Drop"></i>
                            </div>
@@ -48,7 +54,9 @@ function OngoingComponent(props) {
                                  e.target.value = true;
                                  props.setToDos(props.toDos.filter((obj2) => {
                                     if (obj2.id === obj.id) {
-                                       obj2.statusDone = e.target.value;
+                                      
+                                       let data="Done"
+                                       props.UpdateItem(obj.id,data)
                                     }
                                     return obj2;
                                  }));
@@ -66,8 +74,9 @@ function OngoingComponent(props) {
                                  e.target.value = true;
                                 props.setToDos(props.toDos.filter((obj2) => {
                                     if (obj2.id === obj.id) {
-                                       obj2.statusDrop = e.target.value;
-                                       obj.statusRetrieve = !e.target.value;
+                                       
+                                       let data="Drop&Retrive"
+                                       props.UpdateItem(obj.id,data)
                                     }
                                     return obj2;
                                  }));

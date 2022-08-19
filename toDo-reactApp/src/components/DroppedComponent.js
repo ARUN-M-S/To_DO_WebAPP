@@ -26,6 +26,8 @@ function DroppedComponent(props) {
                            </div>
                            <div className="top">
                               <p className="textCross">{obj.text}</p>
+                              <p className="textCross">{obj.description}</p>
+
                            </div>
                            <div className="bottom">
                               <p>{obj.toDoTime}</p>
@@ -40,7 +42,8 @@ function DroppedComponent(props) {
                                       
                                        props.DroppItem(obj2.id)
                                     }
-                                    return obj2;
+                                    return obj
+                                    
                                  }));
                                  }
                                 
