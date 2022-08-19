@@ -4,14 +4,16 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors= require("cors");
+require("dotenv").config(); 
 const mongoose= require("mongoose")
+
 
 
 const indexRouter = require('./routes/index');
 
 
 const app = express();
-mongoose.connect('mongodb+srv://ARUN:discord@cluster0.jbzl1.mongodb.net/vishwa_technology?retryWrites=true&w=majority').then((res)=>{
+mongoose.connect(process.env.MONGOURL).then((res)=>{
 console.log('Db Connected');
 
 }).catch((error)=>{
